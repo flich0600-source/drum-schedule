@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>특별새벽기도회 드럼 배정표</title>
+<meta property="og:title" content="특별새벽기도회 드럼 배정표">
+<meta property="og:description" content="가능한 날짜에 이름을 등록해 주세요. 실시간으로 반영됩니다.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+  :root {
+    --bg:#eef1f6; --paper:#fff; --cell:#fff3d6; --cell-off:#d9dce2; --head:#1f3b73; --head-text:#fff;
+    --sat:#2f7fd1; --sat-head:#3c8de0; --ink:#1c2434; --muted:#5f6b80; --line:#c9cfdb;
+    --chip:#fff; --chip-line:#e2c98f; --chip-mine:#dff0ff; --accent:#1f3b73; --danger:#b3261e; --today:#ffb020;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; }
+  body { background:var(--bg); color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif; padding:16px 16px 40px; font-size:14px; }
+  .wrap { max-width:1080px; margin:0 auto; display:grid; gap:14px; }
+  .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .toolbar label { font-size:13px; color:var(--muted); font-weight:500; }
+  .toolbar input[type=text] { font:inherit; font-size:16px; padding:8px 12px; border:1px solid var(--line); border-radius:8px; background:var(--paper); color:var(--ink); min-width:160px; }
+  .toolbar input:focus, button:focus-visible { outline:2px solid var(--sat); outline-offset:1px; }
+  .hint { font-size:13px; color:var(--muted); flex:1 1 220px; }
+  .status { font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px; }
+  .dot { width:8px; height:8px; border-radius:50%; background:#8a94a6; }
+  .dot.live { background:#2fa36b; } .dot.err { background:var(--danger); }
+  .sheet { background:var(--paper); border:2px solid #2a3fd6; border-radius:4px; padding:6px; }
+  .title-row { display:flex; align-items:center; justify-content:space-between; gap:8px; border:3px solid #f3d24a; padding:8px 10px; margin-bottom:6px; }
+  .title-row h1 { margin:0; font-size:clamp(17px,2.6vw,24px); font-weight:900; text-align:center; flex:1; }
+  .nav { font:inherit; font-weight:700; font-size:18px; width:36px; height:36px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer; }
+  .cal { display:grid; grid-template-columns:repeat(6,1fr); gap:2px; background:var(--line); border:1px solid var(--line); }
+  .dow { background:var(--head); color:var(--head-text); font-weight:700; text-align:center; padding:7px 0; font-size:14px; }
+  .dow.sat { background:var(--sat-head); }
+  .day { background:var(--cell); min-height:92px; display:flex; flex-direction:column; }
+  .day.off { background:var(--cell-off); }
+  .day .num { font-weight:700; font-size:13px; text-align:center; padding:4px 0 3px; background:rgba(255,255,255,.55); color:var(--head); font-variant-numeric:tabular-nums; }
+  .day.sat .num { color:var(--sat); }
+  .day.today .num::after { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--today); margin-left:5px; vertical-align:middle; }
+  .names { display:flex; flex-direction:column; gap:3px; padding:5px 5px 6px; flex:1; }
+  .chip { display:flex; align-items:center; justify-content:space-between; gap:4px; background:var(--chip); border:1px solid var(--chip-line); border-radius:5px; padding:3px 4px 3px 8px; font-size:13px; font-weight:500; line-height:1.3; word-break:keep-all; }
+  .chip.mine { background:var(--chip-mine); border-color:var(--sat); }
+  .chip .x { font:inherit; font-size:13px; line-height:1; border:0; background:transparent; color:var(--muted); width:22px; height:22px; border-radius:4px; cursor:pointer; flex:none; }
+  .chip .x:hover { background:var(--danger); color:#fff; }
+  .add { margin:0 5px 5px; font:inherit; font-size:12px; padding:5px 0; border-radius:5px; border:1px dashed var(--accent); background:transparent; color:var(--accent); cursor:pointer; font-weight:500; }
+  .add:hover { background:var(--chip-mine); }
+  .add:disabled { opacity:.45; cursor:not-allowed; }
+  .legend { font-size:12px; color:var(--muted); display:flex; gap:14px; flex-wrap:wrap; padding:0 4px; }
+  .toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:var(--ink); color:#fff; padding:9px 16px; border-radius:8px; font-size:13px; opacity:0; transition:opacity .2s; pointer-events:none; }
+  .toast.show { opacity:1; }
+  .setup { background:#fff7e0; border:1px solid #e2c98f; border-radius:10px; padding:14px; font-size:13px; line-height:1.6; }
+  .setup code { background:#fff; padding:1px 5px; border-radius:4px; }
+  [hidden] { display:none !important; }
+  @media (max-width:640px) {
+    .day { min-height:76px; } .chip { font-size:12px; padding-left:6px; } .dow { font-size:12px; }
+    .toolbar input[type=text] { min-width:0; flex:1 1 140px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="setup" id="setup" hidden>
+    <b>아직 저장소 설정이 안 됐습니다.</b> 관리자는 <code>config.js</code>에 Firebase 설정값을 넣어 주세요. (README.md 참고)
+  </div>
+  <div class="toolbar">
+    <label for="myname">내 이름</label>
+    <input type="text" id="myname" placeholder="이름을 입력하세요" maxlength="20" autocomplete="off">
+    <div class="hint">이름을 적은 뒤 날짜 칸의 <b>+ 등록</b>을 누르면 모두에게 바로 반영됩니다. 잘못 넣었으면 이름 옆 ✕로 지울 수 있어요.</div>
+    <div class="status"><span class="dot" id="dot"></span><span id="statusText">연결 중…</span></div>
+  </div>
+  <div class="sheet">
+    <div class="title-row">
+      <button class="nav" id="prev" aria-label="이전 달">&lsaquo;</button>
+      <h1 id="title">2026년 11월 특별새벽기도회 드럼 배정표</h1>
+      <button class="nav" id="next" aria-label="다음 달">&rsaquo;</button>
+    </div>
+    <div class="cal" id="cal"></div>
+  </div>
+  <div class="legend"><span>● 오늘</span><span>파란 칸 = 내가 등록한 날</span><span>주일(일요일)은 표에 없습니다</span></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="config.js"></script>
+<script>
+(function () {
+  var DOW = ["월","화","수","목","금","토"];
+  var C = window.APP_CONFIG || {};
+  var TITLE = C.title || "특별새벽기도회 드럼 배정표";
+  var start = C.startMonth || "2026-11";
+  var state = { y: +start.slice(0,4), m: +start.slice(5,7), signups: [], ref: null, ready: false };
+  function $(id) { return document.getElementById(id); }
+  var cal = $("cal"), nameInput = $("myname"), toastEl = $("toast");
+
+  try { nameInput.value = localStorage.getItem("drum_name") || ""; } catch (e) {}
+  nameInput.addEventListener("input", function () { try { localStorage.setItem("drum_name", nameInput.value); } catch (e) {} render(); });
+
+  var toastTimer;
+  function toast(msg) { toastEl.textContent = msg; toastEl.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 2200); }
+  function setStatus(kind, text) { $("dot").className = "dot" + (kind ? " " + kind : ""); $("statusText").textContent = text; }
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function key(y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }
+  function myName() { return nameInput.value.trim(); }
+  function offCell() { var c = document.createElement("div"); c.className = "day off"; return c; }
+
+  function render() {
+    var y = state.y, m = state.m;
+    $("title").textContent = y + "년 " + m + "월 " + TITLE;
+    document.title = y + "년 " + m + "월 " + TITLE;
+    var t = new Date(); var todayKey = key(t.getFullYear(), t.getMonth()+1, t.getDate());
+    var byDate = {};
+    state.signups.forEach(function (s) { (byDate[s.date] = byDate[s.date] || []).push(s); });
+    var me = myName(); var canWrite = state.ready && me.length > 0;
+    var frag = document.createDocumentFragment();
+    DOW.forEach(function (d, i) { var h = document.createElement("div"); h.className = "dow" + (i === 5 ? " sat" : ""); h.textContent = d; frag.appendChild(h); });
+    var first = new Date(y, m-1, 1), daysIn = new Date(y, m, 0).getDate();
+    var col = (first.getDay() + 6) % 7; if (col === 6) col = 0;
+    for (var i = 0; i < col; i++) frag.appendChild(offCell());
+    var filled = col;
+    for (var d = 1; d <= daysIn; d++) {
+      var dow = new Date(y, m-1, d).getDay(); if (dow === 0) continue;
+      var k = key(y, m, d);
+      var cell = document.createElement("div");
+      cell.className = "day" + (dow === 6 ? " sat" : "") + (k === todayKey ? " today" : "");
+      var num = document.createElement("div"); num.className = "num"; num.textContent = m + "/" + d; cell.appendChild(num);
+      var names = document.createElement("div"); names.className = "names";
+      var list = (byDate[k] || []).slice().sort(function (a, b) { return (a.ts||0) - (b.ts||0); });
+      list.forEach(function (s) {
+        var chip = document.createElement("div"); chip.className = "chip" + (me && s.name === me ? " mine" : "");
+        var span = document.createElement("span"); span.textContent = s.name; chip.appendChild(span);
+        var x = document.createElement("button"); x.className = "x"; x.textContent = "✕"; x.title = s.name + " 삭제";
+        x.disabled = !state.ready; x.addEventListener("click", function () { remove(s); }); chip.appendChild(x);
+        names.appendChild(chip);
+      });
+      cell.appendChild(names);
+      var already = me && list.some(function (s) { return s.name === me; });
+      var add = document.createElement("button"); add.className = "add"; add.textContent = already ? "등록됨" : "+ 등록";
+      add.disabled = !canWrite || already;
+      add.addEventListener("click", (function (kk) { return function () { signup(kk); }; })(k));
+      cell.appendChild(add);
+      frag.appendChild(cell); filled++;
+    }
+    while (filled % 6 !== 0) { frag.appendChild(offCell()); filled++; }
+    cal.innerHTML = ""; cal.appendChild(frag);
+  }
+
+  function signup(date) {
+    var name = myName();
+    if (!name) { toast("먼저 이름을 입력하세요"); nameInput.focus(); return; }
+    if (!state.ref) { toast("아직 연결되지 않았습니다"); return; }
+    state.ref.push({ date: date, name: name, ts: Date.now() })
+      .then(function () { toast(date + " 등록했습니다"); })
+      .catch(function () { toast("등록에 실패했습니다. 다시 시도해 주세요"); });
+  }
+  function remove(s) {
+    if (!state.ref) return;
+    if (s.name !== myName() && !confirm(s.name + "님의 " + s.date + " 등록을 지울까요?")) return;
+    state.ref.child(s.id).remove()
+      .then(function () { toast("삭제했습니다"); })
+      .catch(function () { toast("삭제에 실패했습니다"); });
+  }
+  $("prev").addEventListener("click", function () { state.m--; if (state.m < 1) { state.m = 12; state.y--; } render(); });
+  $("next").addEventListener("click", function () { state.m++; if (state.m > 12) { state.m = 1; state.y++; } render(); });
+  render();
+
+  var cfg = C.firebase;
+  if (!cfg || !cfg.databaseURL || cfg.databaseURL.indexOf("YOUR_") >= 0) {
+    $("setup").hidden = false; setStatus("err", "저장소 미설정"); return;
+  }
+  try {
+    firebase.initializeApp(cfg);
+    var db = firebase.database();
+    state.ref = db.ref("signups");
+    db.ref(".info/connected").on("value", function (snap) { if (snap.val()) setStatus("live", "실시간 연결됨"); else setStatus("", "재연결 중…"); });
+    state.ref.on("value", function (snap) {
+      var v = snap.val() || {};
+      state.signups = Object.keys(v).map(function (id) { return Object.assign({ id: id }, v[id]); });
+      state.ready = true; render();
+    }, function (err) { setStatus("err", "읽기 권한 오류: " + err.code); });
+  } catch (e) { setStatus("err", "초기화 실패"); }
+})();
+</script>
+</body>
+</html>

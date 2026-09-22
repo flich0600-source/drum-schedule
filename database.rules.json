@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "signups": {
+      ".read": true,
+      ".write": true,
+      "$id": {
+        ".validate": "newData.hasChildren(['date','name','ts']) && newData.child('name').isString() && newData.child('name').val().length <= 20 && newData.child('date').isString() && newData.child('date').val().matches(/^\\d{4}-\\d{2}-\\d{2}$/)"
+      }
+    }
+  }
+}
