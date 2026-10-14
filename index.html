@@ -15,9 +15,9 @@
   }
   * { box-sizing:border-box; }
   html, body { margin:0; }
-  body { background:var(--bg); color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif; padding:16px 16px 40px; font-size:14px; }
-  .wrap { max-width:1080px; margin:0 auto; display:grid; gap:14px; }
-  .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  body { background:var(--bg); color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif; padding:12px 12px 40px; font-size:14px; }
+  .wrap { max-width:1080px; margin:0 auto; display:grid; gap:12px; }
+  .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
   .toolbar label { font-size:13px; color:var(--muted); font-weight:500; }
   .toolbar input[type=text] { font:inherit; font-size:16px; padding:8px 12px; border:1px solid var(--line); border-radius:8px; background:var(--paper); color:var(--ink); min-width:160px; }
   .toolbar input:focus, button:focus-visible { outline:2px solid var(--sat); outline-offset:1px; }
@@ -27,33 +27,60 @@
   .dot.live { background:#2fa36b; } .dot.err { background:var(--danger); }
   .sheet { background:var(--paper); border:2px solid #2a3fd6; border-radius:4px; padding:6px; }
   .title-row { display:flex; align-items:center; justify-content:space-between; gap:8px; border:3px solid #f3d24a; padding:8px 10px; margin-bottom:6px; }
-  .title-row h1 { margin:0; font-size:clamp(17px,2.6vw,24px); font-weight:900; text-align:center; flex:1; }
-  .nav { font:inherit; font-weight:700; font-size:18px; width:36px; height:36px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer; }
+  .title-row h1 { margin:0; font-size:clamp(16px,2.6vw,24px); font-weight:900; text-align:center; flex:1; line-height:1.3; }
+  .nav { font:inherit; font-weight:700; font-size:18px; width:36px; height:36px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer; flex:none; }
+
+  /* ---- 데스크톱: 달력 격자 ---- */
   .cal { display:grid; grid-template-columns:repeat(6,1fr); gap:2px; background:var(--line); border:1px solid var(--line); }
   .dow { background:var(--head); color:var(--head-text); font-weight:700; text-align:center; padding:7px 0; font-size:14px; }
   .dow.sat { background:var(--sat-head); }
-  .day { background:var(--cell); min-height:92px; display:flex; flex-direction:column; }
+  .day { background:var(--cell); min-height:110px; display:flex; flex-direction:column; }
   .day.off { background:var(--cell-off); }
   .day .num { font-weight:700; font-size:13px; text-align:center; padding:4px 0 3px; background:rgba(255,255,255,.55); color:var(--head); font-variant-numeric:tabular-nums; }
   .day.sat .num { color:var(--sat); }
+  .day .num .d { display:none; }
   .day.today .num::after { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--today); margin-left:5px; vertical-align:middle; }
-  .names { display:flex; flex-direction:column; gap:3px; padding:5px 5px 6px; flex:1; }
-  .chip { display:flex; align-items:center; justify-content:space-between; gap:4px; background:var(--chip); border:1px solid var(--chip-line); border-radius:5px; padding:3px 4px 3px 8px; font-size:13px; font-weight:500; line-height:1.3; word-break:keep-all; }
+  .names { display:flex; flex-wrap:wrap; gap:5px; padding:6px 5px; flex:1; align-content:flex-start; }
+  .chip { position:relative; display:flex; flex-direction:column; align-items:center; gap:2px; background:var(--chip); border:1px solid var(--chip-line); border-radius:7px; padding:4px 4px 3px; font-size:12px; font-weight:500; line-height:1.2; word-break:keep-all; width:64px; }
   .chip.mine { background:var(--chip-mine); border-color:var(--sat); }
-  .chip .x { font:inherit; font-size:13px; line-height:1; border:0; background:transparent; color:var(--muted); width:22px; height:22px; border-radius:4px; cursor:pointer; flex:none; }
-  .chip .x:hover { background:var(--danger); color:#fff; }
+  .chip img { width:52px; height:52px; border-radius:6px; object-fit:cover; object-position:center 20%; display:block; background:#eee; }
+  .chip .nm { max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .chip.noimg { flex-direction:row; width:auto; padding:4px 4px 4px 8px; gap:4px; font-size:13px; }
+  .chip .x { position:absolute; top:-6px; right:-6px; font:inherit; font-size:11px; line-height:1; border:1px solid var(--line); background:#fff; color:var(--muted); width:20px; height:20px; border-radius:50%; cursor:pointer; flex:none; padding:0; }
+  .chip.noimg .x { position:static; border:0; background:transparent; width:22px; height:22px; font-size:13px; }
+  .chip .x:hover { background:var(--danger); color:#fff; border-color:var(--danger); }
   .add { margin:0 5px 5px; font:inherit; font-size:12px; padding:5px 0; border-radius:5px; border:1px dashed var(--accent); background:transparent; color:var(--accent); cursor:pointer; font-weight:500; }
   .add:hover { background:var(--chip-mine); }
   .add:disabled { opacity:.45; cursor:not-allowed; }
   .legend { font-size:12px; color:var(--muted); display:flex; gap:14px; flex-wrap:wrap; padding:0 4px; }
-  .toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:var(--ink); color:#fff; padding:9px 16px; border-radius:8px; font-size:13px; opacity:0; transition:opacity .2s; pointer-events:none; }
+  .toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:var(--ink); color:#fff; padding:9px 16px; border-radius:8px; font-size:13px; opacity:0; transition:opacity .2s; pointer-events:none; z-index:10; }
   .toast.show { opacity:1; }
   .setup { background:#fff7e0; border:1px solid #e2c98f; border-radius:10px; padding:14px; font-size:13px; line-height:1.6; }
   .setup code { background:#fff; padding:1px 5px; border-radius:4px; }
   [hidden] { display:none !important; }
-  @media (max-width:640px) {
-    .day { min-height:76px; } .chip { font-size:12px; padding-left:6px; } .dow { font-size:12px; }
-    .toolbar input[type=text] { min-width:0; flex:1 1 140px; }
+
+  /* ---- 모바일: 날짜별 세로 목록 ---- */
+  @media (max-width: 700px) {
+    body { padding:8px 8px 40px; }
+    .toolbar { padding:10px; }
+    .toolbar label { width:100%; }
+    .toolbar input[type=text] { min-width:0; flex:1 1 100%; }
+    .hint { flex-basis:100%; }
+    .sheet { padding:4px; }
+    .title-row { padding:6px; }
+    .cal { display:flex; flex-direction:column; gap:1px; }
+    .dow, .day.off { display:none; }
+    .day { flex-direction:row; align-items:stretch; min-height:64px; }
+    .day .num { width:58px; flex:none; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4px; font-size:13px; border-right:1px solid var(--line); }
+    .day .num .d { display:block; font-size:11px; font-weight:500; color:var(--muted); }
+    .day.sat .num .d { color:var(--sat); }
+    .day.today .num::after { display:none; }
+    .day.today .num { background:#fff0c2; }
+    .day.week-end { border-bottom:4px solid var(--head); }
+    .names { padding:6px; gap:6px; align-items:flex-start; }
+    .chip { width:60px; }
+    .chip img { width:48px; height:48px; }
+    .add { margin:0; align-self:stretch; width:62px; flex:none; border-radius:0; border-width:0 0 0 1px; border-style:solid; font-size:13px; }
   }
 </style>
 </head>
@@ -65,7 +92,7 @@
   <div class="toolbar">
     <label for="myname">내 이름</label>
     <input type="text" id="myname" placeholder="이름을 입력하세요" maxlength="20" autocomplete="off">
-    <div class="hint">이름을 적은 뒤 날짜 칸의 <b>+ 등록</b>을 누르면 모두에게 바로 반영됩니다. 잘못 넣었으면 이름 옆 ✕로 지울 수 있어요.</div>
+    <div class="hint">이름을 적은 뒤 날짜 칸의 <b>+ 등록</b>을 누르면 모두에게 바로 반영됩니다. 잘못 넣었으면 ✕로 지울 수 있어요.</div>
     <div class="status"><span class="dot" id="dot"></span><span id="statusText">연결 중…</span></div>
   </div>
   <div class="sheet">
@@ -88,6 +115,7 @@
   var DOW = ["월","화","수","목","금","토"];
   var C = window.APP_CONFIG || {};
   var TITLE = C.title || "특별새벽기도회 드럼 배정표";
+  var PHOTOS = C.photos || {};
   var start = C.startMonth || "2026-11";
   var state = { y: +start.slice(0,4), m: +start.slice(5,7), signups: [], ref: null, ready: false };
   function $(id) { return document.getElementById(id); }
@@ -102,6 +130,7 @@
   function pad(n) { return String(n).padStart(2, "0"); }
   function key(y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }
   function myName() { return nameInput.value.trim(); }
+  function photoFor(name) { var n = (name || "").replace(/\s+/g, ""); return PHOTOS[n] || null; }
   function offCell() { var c = document.createElement("div"); c.className = "day off"; return c; }
 
   function render() {
@@ -122,14 +151,20 @@
       var dow = new Date(y, m-1, d).getDay(); if (dow === 0) continue;
       var k = key(y, m, d);
       var cell = document.createElement("div");
-      cell.className = "day" + (dow === 6 ? " sat" : "") + (k === todayKey ? " today" : "");
-      var num = document.createElement("div"); num.className = "num"; num.textContent = m + "/" + d; cell.appendChild(num);
+      cell.className = "day" + (dow === 6 ? " sat week-end" : "") + (k === todayKey ? " today" : "");
+      var num = document.createElement("div"); num.className = "num";
+      num.appendChild(document.createTextNode(m + "/" + d));
+      var dn = document.createElement("span"); dn.className = "d"; dn.textContent = DOW[dow-1]; num.appendChild(dn);
+      cell.appendChild(num);
       var names = document.createElement("div"); names.className = "names";
       var list = (byDate[k] || []).slice().sort(function (a, b) { return (a.ts||0) - (b.ts||0); });
       list.forEach(function (s) {
-        var chip = document.createElement("div"); chip.className = "chip" + (me && s.name === me ? " mine" : "");
-        var span = document.createElement("span"); span.textContent = s.name; chip.appendChild(span);
-        var x = document.createElement("button"); x.className = "x"; x.textContent = "✕"; x.title = s.name + " 삭제";
+        var src = photoFor(s.name);
+        var chip = document.createElement("div");
+        chip.className = "chip" + (src ? "" : " noimg") + (me && s.name === me ? " mine" : "");
+        if (src) { var img = document.createElement("img"); img.src = src; img.alt = s.name; img.loading = "lazy"; chip.appendChild(img); }
+        var span = document.createElement("span"); span.className = "nm"; span.textContent = s.name; chip.appendChild(span);
+        var x = document.createElement("button"); x.className = "x"; x.textContent = "✕"; x.title = s.name + " 삭제"; x.setAttribute("aria-label", s.name + " 삭제");
         x.disabled = !state.ready; x.addEventListener("click", function () { remove(s); }); chip.appendChild(x);
         names.appendChild(chip);
       });
