@@ -77,9 +77,11 @@
     .day.today .num::after { display:none; }
     .day.today .num { background:#fff0c2; }
     .day.week-end { border-bottom:4px solid var(--head); }
-    .names { padding:6px; gap:6px; align-items:flex-start; }
-    .chip { width:60px; }
-    .chip img { width:48px; height:48px; }
+    .day { min-height:48px; }
+    .names { padding:5px; gap:5px; align-items:flex-start; }
+    .chip { width:calc((100% - 10px) / 3); padding:3px 3px 2px; font-size:13px; }
+    .chip img { width:100%; height:auto; aspect-ratio:1 / 1; }
+    .chip.noimg { width:auto; }
     .add { margin:0; align-self:stretch; width:62px; flex:none; border-radius:0; border-width:0 0 0 1px; border-style:solid; font-size:13px; }
   }
 </style>
